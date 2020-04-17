@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Me</title>
+</head>
+<body>
+<p>Me</p><hr>
+<h2>My Profile</h2><br>
+<h2>welcome <%=account.name%>!</h2>
+	<p>Name : <%=account.name%></p>
+	<p>Email : <%=account.email%></p>
+</form><br>
+<button onclick="logout()"><a href="/log">logout</a></button>
+
+<script type="text/javascript">
+	function logout(){
+  fetch('logout', {
+    method: 'get',
+    credentials: 'include'
+  })
+}
+</script>
+</form>
+</body>
+</html>

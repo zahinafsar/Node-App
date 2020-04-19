@@ -7,19 +7,55 @@
 <p>Me</p><hr>
 <h2>My Profile</h2><br>
 <h2>welcome <%=account.name%>!</h2>
-	<p>Name : <%=account.name%></p>
-	<p>Email : <%=account.email%></p>
-</form><br>
-<button onclick="logout()"><a href="/log">logout</a></button>
+<form action="/update" method="post">
+Name : <input type="text" class="inp" readonly name="name" value="<%=account.name%>"><br><br>
+Email : <input type="email" class="inp" readonly name="email" value="<%=account.email%>"><br><br>
 
-<script type="text/javascript">
-	function logout(){
-  fetch('logout', {
+<div id="pass" style="display: none">
+confirm-password : <input type="password" name="password"><br><br>	
+</div>
+
+<button type="submit">update</button>
+</form>
+<br>
+<button onclick="logout()"><a href="/log">logout</a></button>
+<button onclick="edit()">edit</button>
+
+<script>
+
+function logout(){
+  fetch('/logout', {
     method: 'get',
     credentials: 'include'
   })
+};
+
+var x=true;
+function edit(){
+
+var input = document.getElementsByClassName("inp");
+var password = document.getElementById("pass");
+
+	if (x) {
+		var i=0;
+		while(input.length>i) {
+		input[i].removeAttribute("readonly");
+		i=i+1;
+		}
+		password.style.display="block";
+		x=false;
+	} else {
+		var i=0;
+		while(input.length>i) {
+		input[i].setAttribute("readonly","");
+		i=i+1;
+		}   
+		password.style.display="none";
+		x=true;
+	}
+	
 }
+
 </script>
-</form>
 </body>
 </html>

@@ -1,12 +1,6 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-
-// router.use("/get",(req,res)=>{
-// const tok = req.cookies.token;
-// res.send(tok);
-// })
-
 module.exports = function (req,res,next) {
 	const token = req.cookies.token;
 	if (!token) return res.send("Access denied");

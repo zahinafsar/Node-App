@@ -7,12 +7,11 @@
 <p>All List</p><hr>
 <a href="/register">Register</a><br>
 <% for(let a of account){ %>
-<form action="/delete/<%=a._id%>" method="delete">
+<form action="/delete/<%=a._id%>" method="post">
 	<p><%=a.name%></p>
 	<p><%=a.email%></p>
 <button type="submit">delete</button>
 </form><br>
 <%}%>
-</form>
 </body>
 </html>

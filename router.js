@@ -46,6 +46,7 @@ router.get("/all", async (req,res)=>{
 
 router.get('/logout', (req, res) => {
   res.clearCookie('token');
+  res.redirect("/log")
 });
 
 router.get("/register",(req,res)=>{
@@ -89,13 +90,38 @@ router.post("/log", async(req,res)=>{
 })
 
 
-router.delete("/delete/:id", async (req,res)=>{
+router.post("/delete/:id",auth,async (req,res)=>{
+	const account = await Account.findOne({_id : res.user._id});
+	if (!account.isAdmin) res.send("you are not admin");
 	try{
-		await Account.deleteOne({_id: req.query.id});
+		await Account.deleteOne({_id: req.params.id});
 	}catch(err){
 		console.log(err)
 	}
 	res.redirect("/");
+})
+
+router.post("/update", auth, async (req,res)=>{
+	const { error, value } = schema.validate(req.body);
+	if (error) {
+		return res.status(403).send(error.details[0].message)
+	}
+	const account = await Account.findOne({_id : res.user._id});
+	const valid = await bcrypt.compare(req.body.password,account.password);
+	if (valid) {
+		await Account.updateOne({_id:res.user._id},{
+			$set:{
+				name:req.body.name,
+				email:req.body.email,
+			},
+		new: true
+		}
+		)
+		res.redirect("/me");
+	}else{
+		res.send("wrong password")
+	}
+	
 })
 		
 module.exports = router;

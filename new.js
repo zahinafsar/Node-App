@@ -16,6 +16,7 @@ app.set('view engine', 'ejs');
 mlab.connect(`${process.env.MLAB}`,
 	{useNewUrlParser: true,useUnifiedTopology: true},
 	()=>console.log("connected with DB"));
-app.listen(3000,()=>{
+const port = process.env.PORT || 3000;
+app.listen(port,()=>{
 	console.log("server running")
 });

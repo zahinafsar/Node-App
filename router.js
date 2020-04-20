@@ -11,7 +11,12 @@ require('dotenv').config();
 
 const schema = Joi.object({
     name: Joi.string().min(3).max(60).required(),
-    password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).min(6).required(),
+    password: Joi.string().min(6).required(),
+    email: Joi.string().email().required()
+})
+
+const logschema = Joi.object({
+    password: Joi.string().min(6).required(),
     email: Joi.string().email().required()
 })
 
@@ -74,7 +79,7 @@ router.get("/log",(req,res)=>{
 		res.render("log");
 })
 router.post("/log", async(req,res)=>{
-	const { error, value } = schema.validate(req.body);
+	const { error, value } = logschema.validate(req.body);
 	if (error) return res.status(403).send(error.details[0].message);
 	const account = await Account.findOne({email : req.body.email});
 	if (!account) return res.status(404).send("account not found");

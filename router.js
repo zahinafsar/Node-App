@@ -14,10 +14,6 @@ const schema = Joi.object({
     password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).min(6).required(),
     email: Joi.string().email().required()
 })
-const logschema = Joi.object({
-    password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).min(6).required(),
-    email: Joi.string().email().required()
-})
 
 router.get("/me",auth, async (req,res)=>{
 	 const account = await Account.findById(res.user._id).select("-password");
@@ -78,7 +74,7 @@ router.get("/log",(req,res)=>{
 		res.render("log");
 })
 router.post("/log", async(req,res)=>{
-	const { error, value } = logschema.validate(req.body);
+	const { error, value } = schema.validate(req.body);
 	if (error) return res.status(403).send(error.details[0].message);
 	const account = await Account.findOne({email : req.body.email});
 	if (!account) return res.status(404).send("account not found");
@@ -92,7 +88,7 @@ router.post("/log", async(req,res)=>{
 
 router.post("/delete/:id",auth,async (req,res)=>{
 	const account = await Account.findOne({_id : res.user._id});
-	if (!account.isAdmin) res.send("you are not admin");
+	if (!account.isAdmin) return res.status(404).send("you are not admin");
 	try{
 		await Account.deleteOne({_id: req.params.id});
 	}catch(err){

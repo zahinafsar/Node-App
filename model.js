@@ -5,6 +5,7 @@ require('dotenv').config();
 const accountShema = new mlab.Schema({
 	name: {type: String, required: true, lowercase: true},
 	email: {type: String, required: true, lowercase: true,uinque:true},
+	author: {type: String, required: true, lowercase: true, default: "regular"},
 	password: {type: String, required: true}
 })
 

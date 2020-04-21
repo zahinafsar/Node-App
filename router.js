@@ -93,12 +93,15 @@ router.post("/log", async(req,res)=>{
 
 router.post("/delete/:id",auth,async (req,res)=>{
 	const account = await Account.findOne({_id : res.user._id});
-	if (!account.isAdmin) return res.status(404).send("you are not admin");
-	try{
-		await Account.deleteOne({_id: req.params.id});
-	}catch(err){
-		console.log(err)
-	}
+	const accountToDelete = await Account.findOne({_id : req.params.id});
+	if (res.user._id == req.params.id){
+		await Account.deleteOne({_id: req.params.id})
+		res.redirect("/logout");
+	};
+	if (account.author != "admin") return res.send("you are not admin");
+	if (accountToDelete.author == ("admin" || "moderator"))  return res.send("cant delete admin");
+
+	await Account.deleteOne({_id: req.params.id});
 	res.redirect("/");
 })
 

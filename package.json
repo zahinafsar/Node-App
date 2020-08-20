@@ -5,7 +5,7 @@
   "main": "new.js",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
-    "bcrypt": "^4.0.1",
+    "bcrypt": "^5.0.0",
     "concurrently": "^5.1.0",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
